@@ -49,7 +49,7 @@ Than install nodejs. A guid is provided here:
 
 Than clone the repo and install package::
 
-    git clone <url>
+    git clone https://github.com/Inqbus/inqbus.bokeh.leaflet.git
     cd inqbus.bokeh.leaflet
     python setup.py develop
 
