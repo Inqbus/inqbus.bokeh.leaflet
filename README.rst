@@ -14,7 +14,7 @@ Features
 Examples
 --------
 
-You may find an example in inqbus/bokeh/leaflet/examples/leaflet_example.py
+You may find an example in src/inqbus/bokeh/leaflet/examples/leaflet_example.py
 
 
 Installation
@@ -42,8 +42,6 @@ Run example::
     # serve src/inqbus/bokeh/leaflet/examples/leaflet_example.py to see example
     bokeh serve src/inqbus/bokeh/leaflet src/inqbus/bokeh/leaflet/examples/leaflet_example.py
     # go to http://localhost:5006/leaflet_example
-
-
 
 Support
 -------
