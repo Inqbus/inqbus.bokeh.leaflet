@@ -43,6 +43,16 @@ class RPCWidget(InputWidget):
         self._registered_functions[id] = function
 
     def python_call(self, attrname, old, new):
+        """
+        Eval a Python Call Back.
+        Python callbacks can have a argument.
+        Arguments are parsed as json.
+        Functions are only called if registered before.
+        :param attrname:
+        :param old:
+        :param new:
+        :return:
+        """
         text = self.python_calls.text
 
         match = PYTHON_RPC_PATTERN.match(text)

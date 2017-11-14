@@ -20,6 +20,7 @@ size_options = widget.calculate_marker_scale(1.0)
 # we set blue markers without icon
 # in option you can put everything passed to the leaflet-marker
 options = {
+    # color can be every rgb color
     cfg.LF_COLOR_FIELD: 'blue',
     cfg.LF_MARKER_ICON_FIELD: '',
 }
@@ -27,8 +28,8 @@ options = {
 options.update(size_options)
 # list of lists is required by ColumnDataSource used in widget
 marker_data = [
-    [{'longitude':-0.118092, 'latitude':51.509865, 'options':options, 'tooltip': 'Marker Tooltip 1', 'popup': 'Marker PopUp 1'}],
-    [{'longitude':13.404954, 'latitude':52.520008, 'options':options, 'tooltip': 'Marker Tooltip 2', 'popup': 'Marker PopUp 2'}],
+    [{'longitude':-0.118092, 'latitude':51.509865, 'options':options, 'tooltip': 'Marker Tooltip 1', 'popup': 'Marker PopUp 1', 'id': 'marker1'}],
+    [{'longitude':13.404954, 'latitude':52.520008, 'options':options, 'tooltip': 'Marker Tooltip 2', 'popup': 'Marker PopUp 2', 'id': 'marker2'}],
 ]
 # add the marker
 widget.set_marker(marker_data)
@@ -42,8 +43,8 @@ options = {
 }
 # list of lists is required by ColumnDataSource used in widget
 icon_data = [
-    [{'icon': url, 'longitude':5.234565, 'latitude':50.509865, 'options':options, 'tooltip': 'Icon Tooltip 1', 'popup': 'Icon PopUp 1'}],
-    [{'icon': url, 'longitude':12.404954, 'latitude':49.520008, 'options':options, 'tooltip': 'Icon Tooltip 2', 'popup': 'Icon PopUp 2'}],
+    [{'icon': url, 'longitude':5.234565, 'latitude':50.509865, 'options':options, 'tooltip': 'Icon Tooltip 1', 'popup': 'Icon PopUp 1', 'id': 'icon1'}],
+    [{'icon': url, 'longitude':12.404954, 'latitude':49.520008, 'options':options, 'tooltip': 'Icon Tooltip 2', 'popup': 'Icon PopUp 2', 'id': 'icon2'}],
 ]
 widget.set_icons(icon_data)
 

@@ -14,7 +14,9 @@ export class LeafletWidgetView extends InputWidgetView
 
   initialize: (options) ->
     super(options)
+    # view ca be reached by other objects
     @model._view = @
+    # create a div for the leaflet map
     @_map_div = div({id: 'map'})
     @_map_div.style.width= @model.width.toString() + 'px'
     @_map_div.style.height= @model.height.toString() + 'px'
@@ -25,6 +27,7 @@ export class LeafletWidgetView extends InputWidgetView
     return @
 
   init_map: () ->
+    # create the map object
     LeafletWidgetView::_map = L.map(@_map_div, {center:[49.51, 3.17], zoom:5});
 
     # OpenStreetMap tileLayer
@@ -33,9 +36,9 @@ export class LeafletWidgetView extends InputWidgetView
     }).addTo(@_map);
     @_has_map = 1
 
+    # create panes and layers for icons and marker
     @_map.createPane('icon_pane')
     @_map.getPane('icon_pane').style.zIndex = 610
-
     @_marker_layer = @add_new_layer()
     @_icon_layer = @add_new_layer('icon_pane')
 
@@ -52,7 +55,6 @@ export class LeafletWidgetView extends InputWidgetView
     @set_all_icons()
     @set_all_marker()
 
-
   render: () ->
     @_map.invalidateSize()
 
@@ -62,6 +64,7 @@ export class LeafletWidgetView extends InputWidgetView
     @_map.on('zoomend', jQuery.proxy(() -> @_rpc.send_python_calls('Map.zoomed(' + @_map._zoom.toString() + ')')), this)
     # initialize map data on Python Site
     @_rpc.send_python_calls('Map.zoomed(' + @_map._zoom + ')')
+    # register possible js callbacks
     @_rpc.register_rpc_call( 'map.set_all_marker', @, LeafletWidgetView::set_all_marker )
     @_rpc.register_rpc_call( 'map.set_all_icons', @, LeafletWidgetView::set_all_icons)
     @_rpc.register_rpc_call( 'map.update_legend', @, LeafletWidgetView::update_legend)
@@ -73,18 +76,14 @@ export class LeafletWidgetView extends InputWidgetView
     @_map.addLayer(layer)
     return layer
 
-  add_layer: (layer) ->
-    @_map.addLayer(layer)
-
-  remove_layer: (layer) ->
-    @_map.removeLayer(layer)
-
   empty_layer: (layer) ->
     layer.clearLayers()
     return
 
   set_marker: (latitude, longitude, parent, options={}) ->
-    #use options for kwargs which are not supported by coffee script
+    # use options for kwargs which are not supported by coffee script
+
+    # check if kwargs are set or set default value
     if 'tooltip' of options
         tooltip = options['tooltip']
     else
@@ -102,6 +101,8 @@ export class LeafletWidgetView extends InputWidgetView
     else
         id = null
 
+    # create marker
+    # we use VectorMarkers because they are easy to scale and available in each rgb-color
     marker = L.marker([
           latitude
           longitude
@@ -119,6 +120,7 @@ export class LeafletWidgetView extends InputWidgetView
 
 
   set_icon: (latitude, longitude, icon_path, parent, options={}) ->
+    # use options for kwargs which are not supported by coffee script
     if 'tooltip' of options
         tooltip = options['tooltip']
     else
@@ -131,6 +133,10 @@ export class LeafletWidgetView extends InputWidgetView
         popup = options['popup']
     else
         popup = null
+    if 'id' of options
+        id = options['id']
+    else
+        id = null
 
     lf_options['iconUrl'] = icon_path
 
@@ -143,50 +149,65 @@ export class LeafletWidgetView extends InputWidgetView
         icon.bindTooltip(tooltip)
     if popup != null
         icon.bindPopup(popup)
+    if id != null
+        icon.options['id'] = id
     icon.addTo(parent)
     return icon
 
   set_all_marker: () ->
+        # remove all markers for the case some of them are deleted
         @empty_layer(@_marker_layer)
+
+        # get the source
         source = @model.marker_source.data
         markers = source.rows
         number_points = markers.length
         l = 0
+        # set each marker in source
         while l < number_points
+            # data is a list of lists holding dictionaries. So we grep the dict first
             data = markers[l][0]
+
+            # we read the data from dict and add the marker to the map
             lon = data.longitude
             lat = data.latitude
             lf_options = data.options
             tooltip = data.tooltip
             popup = data.popup
-            @set_marker(lat, lon, @_marker_layer, {lf_options:lf_options, tooltip:tooltip, popup:popup})
+            id = data.id
+            @set_marker(lat, lon, @_marker_layer, {lf_options:lf_options, tooltip:tooltip, popup:popup, id:id})
             l++
         return
 
     set_all_icons: () ->
+        # remove all icons for the case some of them are deleted
         @empty_layer(@_icon_layer)
         source = @model.icon_source.data
         icons = source.rows
         number_points = icons.length
         l = 0
         while l < number_points
-
+            # icons data is a list of lists holding dictionaries. So we grep the dict first
             data = icons[l][0]
 
+            # we read the data from dict and add the icon to the map
             lon = data.longitude
             lat = data.latitude
             icon = data.icon
-
             lf_options = data.options
             tooltip = data.tooltip
             popup = data.popup
-            @set_icon(lat, lon, icon, @_icon_layer, {lf_options:lf_options, tooltip:tooltip, popup:popup})
+            id = data.id
+            @set_icon(lat, lon, icon, @_icon_layer, {lf_options:lf_options, tooltip:tooltip, popup:popup, id:id})
             l++
         return
 
     update_legend: () ->
+        # grep the legend div
         div = @legend._container
+        # get the html from legend_source
         source = @model.legend_source.data.legend[0]
+        # update legend_html
         div.innerHTML = source
 
 

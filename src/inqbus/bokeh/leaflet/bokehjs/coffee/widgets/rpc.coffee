@@ -33,11 +33,6 @@ export class RPCView extends InputWidgetView
         call = @model.js_calls.text.field
         if call of @_rpc_calls
             @_rpc_calls[call].method.apply(@_rpc_calls[call].target)
-#            # call js callback on parent object
-#            # parent object can access map widget to call methods directly on map
-#            jQuery.proxy ((call) ->
-#                eval(call)
-#            ), @_parent
         return
 
 
