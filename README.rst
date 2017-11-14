@@ -1,38 +1,20 @@
-.. This README is meant for consumption by humans and pypi. Pypi can render rst files so please do not use Sphinx features.
-   If you want to learn more about writing documentation, please check out: http://docs.plone.org/about/documentation_styleguide.html
-   This text does not appear on pypi or github. It is a comment.
-
 ==============================================================================
 inqbus.bokeh.leaflet
 ==============================================================================
 
-Tell me what your product does
+Leaflet Integration for Bokeh Server
 
 Features
 --------
 
-- Can be bullet points
+- Leaflet Map with Markers, Icons and Legend
+- Communication over RemoteProcedureCall (RPCWidget)
 
 
 Examples
 --------
 
-This add-on can be seen in action at the following sites:
-- Is there a page on the internet where everybody can see the features?
-
-
-Documentation
--------------
-
-Full documentation for end users can be found in the "docs" folder, and is also available online at http://docs.plone.org/foo/bar
-
-
-Translations
-------------
-
-This product has been translated into
-
-- Klingon (thanks, K'Plai)
+You may find an example in inqbus/bokeh/leaflet/examples/leaflet_example.py
 
 
 Installation
@@ -53,8 +35,13 @@ Than clone the repo and install package::
     cd inqbus.bokeh.leaflet
     python setup.py develop
 
-Contribute
-----------
+Run example::
+
+   # serve src/inqbus/bokeh/leaflet to get statics
+   # serve src/inqbus/bokeh/leaflet/examples/leaflet_example.py to see example
+   bokeh serve src/inqbus/bokeh/leaflet src/inqbus/bokeh/leaflet/examples/leaflet_example.py
+   # go to http://localhost:5006/leaflet_example
+
 
 
 Support
@@ -62,9 +49,3 @@ Support
 
 If you are having issues, please let us know.
 We have a mailing list located at: project@example.com
-
-
-License
--------
-
-The project is licensed under the GPLv2.
