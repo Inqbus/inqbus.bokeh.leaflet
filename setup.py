@@ -48,8 +48,5 @@ setup(
     },
     entry_points="""
     [console_scripts]
-    startup = eprofile.bokeh.startup:main_run
-    db_management = eprofile.database.db_management:main
-    process = eprofile.processing.processdispatcher:main
     """,
 )
