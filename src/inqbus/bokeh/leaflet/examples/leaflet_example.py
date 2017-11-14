@@ -25,7 +25,7 @@ options = {
 }
 # we add marker size to options
 options.update(size_options)
-
+# list of lists is required by ColumnDataSource used in widget
 marker_data = [
     [{'longitude':-0.118092, 'latitude':51.509865, 'options':options, 'tooltip': 'Marker Tooltip 1', 'popup': 'Marker PopUp 1'}],
     [{'longitude':13.404954, 'latitude':52.520008, 'options':options, 'tooltip': 'Marker Tooltip 2', 'popup': 'Marker PopUp 2'}],
@@ -40,6 +40,7 @@ options = {
     cfg.LF_ICON_SIZE_FIELD: [size, size],
     cfg.LF_ICON_OFFSET_FIELD: [size/2, size/2], # long, lat are placed in the center of the image.
 }
+# list of lists is required by ColumnDataSource used in widget
 icon_data = [
     [{'icon': url, 'longitude':5.234565, 'latitude':50.509865, 'options':options, 'tooltip': 'Icon Tooltip 1', 'popup': 'Icon PopUp 1'}],
     [{'icon': url, 'longitude':12.404954, 'latitude':49.520008, 'options':options, 'tooltip': 'Icon Tooltip 2', 'popup': 'Icon PopUp 2'}],
@@ -51,7 +52,7 @@ widget.set_legend('<div>LEGEND</br>Put your legend here</div>')
 
 # ZOOMING
 # react on zoom events
-def zoom_handler(zoom):
+def zoom_handler(widget, zoom):
     print(zoom)
 
 widget.set_map_zoomed_handler(zoom_handler)

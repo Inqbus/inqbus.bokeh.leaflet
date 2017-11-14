@@ -60,6 +60,7 @@ class RPCWidget(InputWidget):
                 logger.error("RPC python call %s not registered" % text)
         else:
             logger.error("RPC python call %s not correct" % text)
+        # reset python calls to make sure next change is recoginzed again
         self.python_calls.text = ''
 
     def send_js_calls(self, calls=''):

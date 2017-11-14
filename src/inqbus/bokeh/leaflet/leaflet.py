@@ -39,14 +39,21 @@ class LeafletWidget(InputWidget):
 
     def __init__(self, *args, **kwargs):
         super(LeafletWidget, self).__init__(*args, **kwargs)
+        # initial zoom
         self._zoom = 3
+
+        # rpc widget to communicate between js and python
         self.rpc = RPCWidget(name='RPC')
 
+        # data storage
         self.marker_source = ColumnDataSource(data={'rows': []})
         self.icon_source = ColumnDataSource(data={'rows': []})
         self.legend_source = ColumnDataSource(data={'legend': []})
+
+        # register python callback for Zoom Event
         self.rpc.register_function('Map.zoomed', self.map_zoomed)
 
+        # function called, when someone zooms the map
         self._map_zoomend_handler = None
 
     def set_map_zoomed_handler(self, handler):
@@ -59,9 +66,14 @@ class LeafletWidget(InputWidget):
         :return:
         """
         if self._map_zoomend_handler:
-            self._map_zoomend_handler(zoom)
+            self._map_zoomend_handler(self, zoom)
     
     def calculate_marker_scale(self, size_scale):
+        """
+        Helper method to get size options for marker. Scales default values by given size_scale
+        :param size_scale: float
+        :return:
+        """
         size = [int(a*size_scale) for a in cfg.DEFAULT_MARKER_SIZE]
         anchor = [int(a*size_scale) for a in cfg.DEFAULT_MARKER_ANCHOR]
         shadow_size = [int(a*size_scale) for a in cfg.DEFAULT_SHADOW_SIZE]
