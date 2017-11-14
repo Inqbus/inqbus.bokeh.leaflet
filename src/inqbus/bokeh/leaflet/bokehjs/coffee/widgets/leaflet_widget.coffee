@@ -15,7 +15,6 @@ export class LeafletWidgetView extends InputWidgetView
   initialize: (options) ->
     super(options)
     @model._view = @
-
     @_map_div = div({id: 'map'})
     @_map_div.style.width= @model.width.toString() + 'px'
     @_map_div.style.height= @model.height.toString() + 'px'
@@ -40,18 +39,32 @@ export class LeafletWidgetView extends InputWidgetView
     @_marker_layer = @add_new_layer()
     @_icon_layer = @add_new_layer('icon_pane')
 
+    # set legend
+    @legend = L.control({position: 'bottomleft'});
+    @legend.onAdd = (map) ->
+      div = L.DomUtil.create('div', 'info legend')
+      return div
+
+    @legend.addTo(@_map)
+
+    # set initial data
+    @update_legend()
+    @set_all_icons()
+    @set_all_marker()
+
 
   render: () ->
     @_map.invalidateSize()
 
-
   initialize_handler: () ->
-    @_rpc = @model.document._all_models_by_name.get_one('RPC_Control')._view
-
+    @_rpc = @model.document._all_models_by_name.get_one('RPC')._view
     # Handler for Python Site listening on map
     @_map.on('zoomend', jQuery.proxy(() -> @_rpc.send_python_calls('Map.zoomed(' + @_map._zoom.toString() + ')')), this)
     # initialize map data on Python Site
     @_rpc.send_python_calls('Map.zoomed(' + @_map._zoom + ')')
+    @_rpc.register_rpc_call( 'map.set_all_marker', @, LeafletWidgetView::set_all_marker )
+    @_rpc.register_rpc_call( 'map.set_all_icons', @, LeafletWidgetView::set_all_icons)
+    @_rpc.register_rpc_call( 'map.update_legend', @, LeafletWidgetView::update_legend)
     return
 
   add_new_layer: (pane = 'markerPane') ->
@@ -133,6 +146,48 @@ export class LeafletWidgetView extends InputWidgetView
     icon.addTo(parent)
     return icon
 
+  set_all_marker: () ->
+        @empty_layer(@_marker_layer)
+        source = @model.marker_source.data
+        markers = source.rows
+        number_points = markers.length
+        l = 0
+        while l < number_points
+            data = markers[l][0]
+            lon = data.longitude
+            lat = data.latitude
+            lf_options = data.options
+            tooltip = data.tooltip
+            popup = data.popup
+            @set_marker(lat, lon, @_marker_layer, {lf_options:lf_options, tooltip:tooltip, popup:popup})
+            l++
+        return
+
+    set_all_icons: () ->
+        @empty_layer(@_icon_layer)
+        source = @model.icon_source.data
+        icons = source.rows
+        number_points = icons.length
+        l = 0
+        while l < number_points
+
+            data = icons[l][0]
+
+            lon = data.longitude
+            lat = data.latitude
+            icon = data.icon
+
+            lf_options = data.options
+            tooltip = data.tooltip
+            popup = data.popup
+            @set_icon(lat, lon, icon, @_icon_layer, {lf_options:lf_options, tooltip:tooltip, popup:popup})
+            l++
+        return
+
+    update_legend: () ->
+        div = @legend._container
+        source = @model.legend_source.data.legend[0]
+        div.innerHTML = source
 
 
 export class LeafletWidget extends InputWidget
@@ -150,4 +205,8 @@ export class LeafletWidget extends InputWidget
   # ``p.String`` in the JS implementatin. Where the JS type system is not yet
   # as rich, you can use ``p.Any`` as a "wildcard" property type.
   @define {
+    rpc: [p.Any]
+    marker_source: [p.Any]
+    icon_source: [p.Any]
+    legend_source: [p.Any]
   }

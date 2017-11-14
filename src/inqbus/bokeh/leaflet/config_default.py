@@ -13,8 +13,9 @@ MODULE_PATH = os.path.dirname(__file__)
 # Activate only if developing locally. Never on a server
 DEV_MODE = True
 # Base dir for locating coffe, css, js files to reference in __implemetation__ stanzas
-BOKEHJS_DIR = os.path.join(MODULE_PATH, "../bokehjs")
+BOKEHJS_DIR = os.path.join(MODULE_PATH, "bokehjs")
 COFFEE_DIR = os.path.join(BOKEHJS_DIR, "coffee")
+STATIC_DIR = os.path.join(MODULE_PATH, 'static')
 
 
 # ===================
@@ -23,9 +24,10 @@ COFFEE_DIR = os.path.join(BOKEHJS_DIR, "coffee")
 
 BOKEH_HOST_INTERN_IP = '127.0.0.1'
 BOKEH_HOST_INTERN_PORT = '5006'
-BOKEH_HOST_EXTERN = 'test_bokeh.de'
+# Replace by extern bokeh address
+BOKEH_HOST_EXTERN = '127.0.0.1:5006'
 
-USE_HTTPS = True
+USE_HTTPS = False
 
 if USE_HTTPS:
     HTTP_PREFIX = 'https://'
@@ -37,7 +39,6 @@ BOKEH_URL = HTTP_PREFIX + BOKEH_HOST_EXTERN
 import os
 
 BOKEH_PATH = os.path.dirname((os.path.realpath(__file__)))
-# COMPILED_JS_PATH = os.path.join(BOKEH_PATH, 'static', 'compiled_js')
 
 # =================
 # Leaflet
