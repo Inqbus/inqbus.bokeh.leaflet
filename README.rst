@@ -7,7 +7,7 @@ Leaflet Integration for Bokeh Server
 Features
 --------
 
-- Leaflet Map with Markers, Icons and Legend
+- Leaflet Map with VectorMarkers, Icons and Legend
 - Communication over RemoteProcedureCall (RPCWidget)
 
 
