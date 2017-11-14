@@ -22,12 +22,13 @@ Installation
 
 Create a virtualenv with python3::
 
-   mkvirtualenv --python=/usr/bin/python3 bokeh_leaflet
-   cdvirtualenv
+    mkvirtualenv --python=/usr/bin/python3 bokeh_leaflet
+    cdvirtualenv
 
-Than install nodejs. A guid is provided here:
+Than install nodejs. It is possible to install a prebuild nodejs using pip::
 
-    https://calvinx.com/2013/07/11/python-virtualenv-with-node-environment-via-nodeenv/
+    pip install nodeenv
+    nodeenv -p
 
 Than clone the repo and install package::
 
@@ -37,10 +38,10 @@ Than clone the repo and install package::
 
 Run example::
 
-   # serve src/inqbus/bokeh/leaflet to get statics
-   # serve src/inqbus/bokeh/leaflet/examples/leaflet_example.py to see example
-   bokeh serve src/inqbus/bokeh/leaflet src/inqbus/bokeh/leaflet/examples/leaflet_example.py
-   # go to http://localhost:5006/leaflet_example
+    # serve src/inqbus/bokeh/leaflet to get statics
+    # serve src/inqbus/bokeh/leaflet/examples/leaflet_example.py to see example
+    bokeh serve src/inqbus/bokeh/leaflet src/inqbus/bokeh/leaflet/examples/leaflet_example.py
+    # go to http://localhost:5006/leaflet_example
 
 
 
