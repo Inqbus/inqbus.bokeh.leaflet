@@ -77,7 +77,7 @@ You may find an example in src/inqbus/bokeh/leaflet/examples/leaflet_example.py:
     widget.set_map_zoomed_handler(zoom_handler)
 
     doc = curdoc()
-doc.add_root(widget.get_layout())
+    doc.add_root(widget.get_layout())
 
 
 Installation
